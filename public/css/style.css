@@ -1,0 +1,29 @@
+body{
+    background-color: #f8fafb; 
+    font-family: "Roboto", sans-serif;
+}
+
+.bg-card{
+    background-color: rgba(153, 7, 237, 0.5);
+    min-width: 40%;
+    border-radius: 3px;
+    height: 45px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.bg-card:hover{
+    background-color: rgba(153, 7, 237, 0.7);
+}
+h2 {
+    font-size: 20px;
+}
+
+.c-item{
+    height: 80vh;
+}
+
+.c-image{
+    height: 100%;
+    background-size: cover;
+}
