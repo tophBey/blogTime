@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PostController;
 use App\Models\Category;
@@ -57,24 +58,21 @@ Route::get('/author/{author:username}', function(User $author) {
 });
 
 
-Route::get('/login',[LoginController::class,'index']);
+Route::get('/login',[LoginController::class,'index'])->middleware(['guest'])->name('login');
 Route::post('/login',[LoginController::class, 'login']);
+Route::post('/logout',[LoginController::class, 'logout']);
 
 
-Route::get('/register',[LoginController::class,'create']);
+
+Route::get('/register',[LoginController::class,'create'])->middleware(['guest']);;
 Route::post('/register',[LoginController::class, 'store']);
 
-Route::get('/dashboard', function(){
-    return view('dasboard',[
-        'title' => ''
-
-    ]);
-});
+Route::get('/dashboard', [DashboardController::class,'index'])->middleware(['auth']);
 
 
 Route::fallback(function(){
     
-    return view('/notfound',[
+    return view('notfound',[
 
     ]);
 });

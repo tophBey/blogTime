@@ -39,11 +39,12 @@ class LoginController extends Controller
         $validatedData['password']= Hash::make($validatedData['password']);
 
         // kasih pesan
-        $request->session()->flash('success','Registrasi Berhasil Silahkan Login');
+        // $request->session()->flash('success','Registrasi Berhasil Silahkan Login');
+        // $request->session()->flush();
 
         User::query()->create(
             $validatedData);
-        return redirect('/login');
+        return redirect('/login')->with('success','Registrasi Berhasil Silahkan Login');
 
     }
 
@@ -64,5 +65,15 @@ class LoginController extends Controller
         return back()->with('errors','login Failed');
         
 
+    }
+
+    public function logout(Request $request){
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+
+        return redirect('/');
     }
 }

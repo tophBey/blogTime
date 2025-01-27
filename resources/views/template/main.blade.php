@@ -47,9 +47,33 @@
         </li>
       </ul>
 
+      
+      
       <ul class="navbar-nav ms-auto">
+      @auth
+      <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Halo {{ auth()->user()->name }}
+        </a>
+
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Dashboard</a></li>
+          <li>
+            <form action="/logout" method="POST">
+              @csrf
+              <button type="submit" class="dropdown-item"></button>
+            </form>
+          </li>
+        </ul>
+      </div>
+        @else
         <li class="nav-item"><a href="/login" class="text-decoration-none text-white"><i class="fa-solid fa-right-to-bracket"></i> Login</a></li>
+        @endauth
       </ul>
+
+     
+
+
     </div>
   </div>
 </nav>
