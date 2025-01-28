@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardPostController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PostController;
 use App\Models\Category;
@@ -68,6 +69,8 @@ Route::get('/register',[LoginController::class,'create'])->middleware(['guest'])
 Route::post('/register',[LoginController::class, 'store']);
 
 Route::get('/dashboard', [DashboardController::class,'index'])->middleware(['auth']);
+Route::resource('/dashboard/post', DashboardPostController::class)->middleware(['auth']);
+
 
 
 Route::fallback(function(){

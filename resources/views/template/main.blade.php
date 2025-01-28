@@ -57,7 +57,7 @@
         </a>
 
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Dashboard</a></li>
+          <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
           <li>
             <form action="/logout" method="POST">
               @csrf
