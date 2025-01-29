@@ -18,6 +18,12 @@
                 My Post
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex text-dark align-items-center gap-2" href="/dashboard/post/create">
+                <svg class="bi"><use xlink:href="#file-earmark"/></svg>
+                Add Post
+              </a>
+            </li>
             <li class="nav-item ">
                 <form action="/logout" method="post" >
                     @csrf

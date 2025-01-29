@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use Illuminate\Http\Request;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable ;
 
     protected $fillable = [
         "title",
@@ -20,6 +21,14 @@ class Post extends Model
     ];
 
 
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
     public function scopeFilters($query, array $filters){
         
         // if(request('search')){
