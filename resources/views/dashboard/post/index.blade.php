@@ -4,7 +4,15 @@
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Halaman Post</h1>
-</div>     
+</div>   
+
+
+
+@if (session()->has('addSuccess'))
+  <div class="alert alert-success">
+    {{ session('addSuccess') }}
+  </div>
+  @endif
 
 <a href="/dashboard/post/create" class="btn btn-success mb-3 py-2"><i class="fa-solid fa-plus"></i> Buat Postingan</a>
 
@@ -29,12 +37,18 @@
                 <a href="/dashboard/post/{{$post->id}}" class="btn btn-info ">
                     <i class="fa-regular fa-eye"></i>
                 </a>
-                <a href="" class="btn btn-secondary ">
+                <a href="/dashboard/post/{{$post->id}}/edit" class="btn btn-secondary ">
                 <i class="fa-solid fa-pen-to-square"></i>
                 </a>
-                <a href="/dashboard/post/{{$post->id}}" class="btn btn-danger ">
-                  <i class="fa-solid fa-trash"></i>
-                </a>
+
+                <form action="/dashboard/post/{{$post->id}}" method="POST" class="d-inline">
+                  @method('delete')
+                @csrf
+                  <button type="submit" class="btn btn-danger border-0">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </form>
+               
               </td>
             </tr> 
             @empty

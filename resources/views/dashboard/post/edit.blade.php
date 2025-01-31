@@ -3,15 +3,16 @@
 @section('container')
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Buat Postingan</h1>
+        <h1 class="h2">Edit Postingan</h1>
 </div>
 
 <div class="col-lg-8">
-    <form action="/dashboard/post" method="POST" enctype="multipart/form-data">
+    <form action="/dashboard/post/{{$post->id}}" method="POST">
         @csrf
+        @method('put')
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control @error('title') is-invalid @enderror " name="title" id="title" placeholder="Masukan judul" required value="{{old('title')}}">
+            <input type="text" class="form-control @error('title') is-invalid @enderror " name="title" id="title" placeholder="Masukan judul" required value="{{old('title', $post->title)}}">
             @error('title')
                 <div class="invalid-feedback">
                     <h4>{{ $message }}</h4>
@@ -20,7 +21,7 @@
         </div>
         <div class="mb-3">
             <label for="slug" class="form-label">Slug</label>
-            <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="slug" placeholder="Slug" disabled readonly value="{{old('slug')}}">
+            <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="slug" placeholder="Slug" disabled readonly value="{{old('slug', $post->slug)}}">
             @error('slug')
                 <div class="invalid-feedback">
                     <h4>{{ $message }}</h4>
@@ -40,7 +41,7 @@
             <select class="form-select" name="category_id">
                 <option selected>Pilih Kategori</option>
                 @foreach ($categories as $category)
-                    @if(old('category_id') == $category->id)
+                    @if(old('category_id', $post->category_id) == $category->id)
                         <option value="{{$category->id}}" selected>{{ $category->name }}</option>
 
                     @else
@@ -52,28 +53,18 @@
         </div>
 
         <div class="mb-3">
-            <label for="image" class="form-label">Input Gambar</label>
-            <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image">
-            @error('image')
-                <div class="invalid-feedback">
-                    <h4>{{ $message }}</h4>
-                </div>
-            @enderror
-        </div>
-
-        <div class="mb-3">
             <label for="body" class="form-label">Body</label>
             @error('body')
                 <div class="invalid-feedback">
                     <h4>{{ $message }}</h4>
                 </div>
             @enderror
-            <input id="body" type="hidden" name="body" value="{{old('body')}}">
+            <input id="body" type="hidden" name="body" value="{{old('body', $post->body)}}">
             <trix-editor input="body"></trix-editor>
         </div>
 
         <div class="mb-3">
-            <button class="btn btn-primary px-3 py-2">Submit</button>
+            <button class="btn btn-primary px-3 py-2">Update</button>
         </div>
     </form>
 </div>

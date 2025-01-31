@@ -6,7 +6,10 @@ use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Str;
+
 use \Cviebrock\EloquentSluggable\Services\SlugService;
+// use Str;
 
 class DashboardPostController extends Controller
 {
@@ -33,7 +36,29 @@ class DashboardPostController extends Controller
      */
     public function store(Request $request)
     {
-        return response()->json($request);
+
+        // taks hari ini benerin gambar
+        
+
+        // return $request->file('image')->store('post-images');
+        $validated = $request->validate([
+            'title' => ['required', 'max:255'],
+            'slug' => ['required','unique:posts'],
+            'image' => ['required','image','max:3072', 'mimes:png,jpg,jpeg'],
+            'category_id' => ['required'],
+            'body' => ['required']
+        ]);
+
+        if($request->file('image')){
+            $validated['image'] = $request->file('image')->store('post-image');
+        }
+
+        $validated['user_id'] = auth()->user()->id;
+        $validated['excerpt'] = Str::limit(strip_tags($request->input('body')),200);//tag html di tidak adakan
+
+        Post::create($validated);
+
+        return redirect('/dashboard/post')->with('addSuccess', 'Berhasil Menambahkan Post Baru');
     }
 
     /**
@@ -49,7 +74,8 @@ class DashboardPostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $categories = Category::all();
+        return view('dashboard.post.edit', compact('post','categories'));
     }
 
     /**
@@ -57,7 +83,24 @@ class DashboardPostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $rules = [
+            'title' => ['required', 'max:255'],
+            'category_id' => ['required'],
+            'body' => ['required']
+        ];
+
+        if($request->input('slug') != $post->slug){
+            $rules['slug'] = ['unique:posts'];
+        }
+
+        $validated = $request->validate($rules);
+
+        $validated['user_id'] = auth()->user()->id;
+        $validated['excerpt'] = Str::limit(strip_tags($request->input('body')),200);//tag html di tidak adakan
+
+        Post::where('id', $post->id)->update($validated);
+
+        return redirect('/dashboard/post')->with('addSuccess', 'Berhasil Mengedit Post Baru');
     }
 
     /**
@@ -65,7 +108,9 @@ class DashboardPostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        Post::destroy($post->id);
+
+        return redirect('/dashboard/post');
     }
 
     public function createSlug(Request $request){
