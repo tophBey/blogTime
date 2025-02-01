@@ -15,8 +15,13 @@
                     <a class="text-decoration-none"
                         href="/posts?category={{$posts->category->slug}}">{{ $posts->category->name }}</a>
                 </p>
-                
-                <img src="{{ asset('img') . '/' . $posts->category->name . '.jpg'}}" alt="{{$posts->category->name}}" width="100%" height="500" class="mb-4">
+                @if ($post->image)
+                    <img src="{{ asset( 'storage') . '/' . $post->image}}" alt="{{$post->category->name}}" width="100%" height="500" class="mb-4">
+
+                @else
+                    <img src="{{ asset('img') . '/' . $post->category->name . '.jpg'}}" width="350" height="350" class="card-img-top" alt="{{$post->category->name}}">
+
+                @endif
                 {!! $posts->body !!}
                 <br>
                 <!-- {{ $posts->body }} -->

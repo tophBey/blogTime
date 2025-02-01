@@ -32,8 +32,14 @@
 <!-- cek ada postingan atau tidak -->
 @if ($posts->count())
     <div class="card mb-4 text-center">
-        <img src="{{ asset('img') . '/' . $posts[0]->category->name . '.jpg'}}" class="card-img-top" alt="gambarnya lucak:("
-            width="1100" height="600">
+    @if ($posts[0]->image)
+         <img src="{{ asset( 'storage') . '/' . $posts[0]->image}}" alt="{{$posts[0]->category->name}}" width="100%" height="500" class="mb-4">
+
+    @else
+        <img src="{{ asset('img') . '/' . $posts[0]->category->name . '.jpg'}}" class="card-img-top" alt="gambarnya lucak:(" width="1100" height="600">
+
+     @endif
+
         <div class="card-body">
             <h3 class="card-title"><a class="text-decoration-none text-dark"
                     href="{{ $posts[0]->slug }}">{{ $posts[0]->title }}</a></h3>
@@ -65,8 +71,15 @@
                                 {{ $post->category->name }}
                             </div>
                         </a>
-                        <img src="{{ asset('img') . '/' . $post->category->name . '.jpg'}}" width="350" height="350"
-                            class="card-img-top" alt="{{$post->category->name}}">
+
+                        @if ($post->image)
+                            <img src="{{ asset( 'storage') . '/' . $post->image}}" alt="{{$post->category->name}}" width="100%" height="500" class="mb-4">
+
+                         @else
+                            <img src="{{ asset('img') . '/' . $post->category->name . '.jpg'}}" width="350" height="350" class="card-img-top" alt="{{$post->category->name}}">
+
+                        @endif
+
                         <div class="card-body">
                             <h5 class="card-title">{{ $post->title }}</h5>
                             <small class="text-muted">

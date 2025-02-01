@@ -7,7 +7,7 @@
 </div>
 
 <div class="col-lg-8">
-    <form action="/dashboard/post/{{$post->id}}" method="POST">
+    <form action="/dashboard/post/{{$post->id}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('put')
         <div class="mb-3">
@@ -53,6 +53,24 @@
         </div>
 
         <div class="mb-3">
+            <label for="image" class="form-label">Input Gambar</label>
+            <input type="hidden" name="oldImage" value="{{ $post->image }}">
+            @if ($post->image)
+                <img src="{{asset('storage/' . $post->image)}}" alt="" class="img-preview img-fluid mb-3 d-block">
+
+            @else
+                <img  alt="" class="img-preview img-fluid mb-3">
+
+            @endif
+            <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image" onchange="previewImage()">
+            @error('image')
+                <div class="invalid-feedback">
+                    <h4>{{ $message }}</h4>
+                </div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
             <label for="body" class="form-label">Body</label>
             @error('body')
                 <div class="invalid-feedback">
@@ -78,6 +96,21 @@
         .then(response => response.json())
         .then(data => slug.value = data.slug)
     })
+
+    function previewImage(){
+        const oFReader = new FileReader()
+
+        const image =document.getElementById('image')
+        const imagePreview =document.querySelector('.img-preview')
+
+        imagePreview.style.display = 'block'
+
+        oFReader.readAsDataURL(image.files[0])
+        oFReader.onload = function(oFREvent){
+            imagePreview.src = oFREvent.target.result
+        }
+
+    }
 </script>
 
 

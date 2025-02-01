@@ -53,7 +53,8 @@
 
         <div class="mb-3">
             <label for="image" class="form-label">Input Gambar</label>
-            <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image">
+            <img  alt="" class="img-preview img-fluid mb-3">
+            <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image" onchange="previewImage()">
             @error('image')
                 <div class="invalid-feedback">
                     <h4>{{ $message }}</h4>
@@ -87,6 +88,24 @@
         .then(response => response.json())
         .then(data => slug.value = data.slug)
     })
+
+
+    function previewImage(){
+        const oFReader = new FileReader()
+
+        const image =document.getElementById('image')
+        const imagePreview =document.querySelector('.img-preview')
+
+        imagePreview.style.display = 'block'
+
+        oFReader.readAsDataURL(image.files[0])
+        oFReader.onload = function(oFREvent){
+            imagePreview.src = oFREvent.target.result
+        }
+
+    }
+    
+
 </script>
 
 

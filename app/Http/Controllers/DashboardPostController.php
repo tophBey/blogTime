@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 use \Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Support\Facades\Storage;
+
 // use Str;
 
 class DashboardPostController extends Controller
@@ -44,7 +46,7 @@ class DashboardPostController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'max:255'],
             'slug' => ['required','unique:posts'],
-            'image' => ['required','image','max:3072', 'mimes:png,jpg,jpeg'],
+            'image' => ['image','max:3072', 'mimes:png,jpg,jpeg'],
             'category_id' => ['required'],
             'body' => ['required']
         ]);
@@ -85,6 +87,7 @@ class DashboardPostController extends Controller
     {
         $rules = [
             'title' => ['required', 'max:255'],
+            'image' => ['image','max:3072', 'mimes:png,jpg,jpeg'],
             'category_id' => ['required'],
             'body' => ['required']
         ];
@@ -94,6 +97,16 @@ class DashboardPostController extends Controller
         }
 
         $validated = $request->validate($rules);
+
+        if($request->file('image')){
+
+            if($request->input('oldImage')){
+                // jika update gambar baru hapus gambar lama
+                Storage::delete($request->input('oldImage'));
+            }
+
+            $validated['image'] = $request->file('image')->store('post-image');
+        }
 
         $validated['user_id'] = auth()->user()->id;
         $validated['excerpt'] = Str::limit(strip_tags($request->input('body')),200);//tag html di tidak adakan
@@ -108,6 +121,12 @@ class DashboardPostController extends Controller
      */
     public function destroy(Post $post)
     {
+
+        if($post->image){
+            // jika hapus post  hapus gambar juga
+            Storage::delete($post->image);
+        }
+
         Post::destroy($post->id);
 
         return redirect('/dashboard/post');

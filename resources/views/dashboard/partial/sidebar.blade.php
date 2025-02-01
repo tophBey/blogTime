@@ -24,6 +24,12 @@
                 Add Post
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex text-dark align-items-center gap-2" href="/posts">
+                <svg class="bi"><use xlink:href="#file-earmark"/></svg>
+                All Post
+              </a>
+            </li>
             <li class="nav-item ">
                 <form action="/logout" method="post" >
                     @csrf
