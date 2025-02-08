@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminCategory;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPostController;
 use App\Http\Controllers\LoginController;
@@ -71,6 +72,8 @@ Route::post('/register',[LoginController::class, 'store']);
 Route::get('/dashboard', [DashboardController::class,'index'])->middleware(['auth']);
 Route::get('/dashboard/post/createSlug', [DashboardPostController::class,'createSlug'])->middleware(['auth']);
 Route::resource('/dashboard/post', DashboardPostController::class)->middleware(['auth']);
+
+Route::resource('dashboard/category', AdminCategory::class)->middleware(['auth','isAdmin']);
 
 
 
